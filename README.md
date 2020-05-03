@@ -15,12 +15,12 @@ npm install
 node index.js
 ```
 
-### TODO
-- [ ] Solve number 114
-- [ ] Solve number 390
-- [ ] Solve number 579
-- [ ] Solve number 627
-- [ ] Solve number 633
-- [ ] Solve number 732
-- [ ] Solve number 921
-- [ ] Solve number 975
+### Not solved yet (in range from 100 to 1000)
+- [ ] 114
+- [ ] 390
+- [ ] 579
+- [ ] 627
+- [ ] 633
+- [ ] 732
+- [ ] 921
+- [ ] 975

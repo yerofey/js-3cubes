@@ -1,13 +1,18 @@
 # js-3cubes
 > Simple script to find [Sums of three cubes](https://en.wikipedia.org/wiki/Sums_of_three_cubes)
 
-### Install
+### Install dependencies
 ```bash
 yarn install
 ```
 or
 ```bash
 npm install
+```
+
+### Run script
+```bash
+node index.js
 ```
 
 ### TODO

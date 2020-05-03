@@ -10,7 +10,7 @@ const timeStart = Date.now();
 Array.range = (start, end) => Array.from({length: ((end + 1) - start)}, (v, k) => k + start);
 
 
-const findNumbers = [ 975 ]; // Array.range(1,100);
+const findNumbers = [ 33 ]; // Array.range(1,100);
 
 
 const hardNumbers = [ 30,33,39,42,51,52,74,75,84,87 ];
@@ -90,22 +90,24 @@ for (const number of findNumbers) {
 	let found = false;
 	let numberResults = [];
 	let resCount = 0;
-	let tenDegree = 1;
-	let max = 10 ** tenDegree;
-	let min = -max;
-	let i = 0;
+  let tenDegree = 1;
+
+  let min = -10;
+  let max = 10;
+  let direction = 1;
 
 	let x = 0;
 	let y = 0;
-	let z = 0;
+  let z = 0;
+  let i = 0;
 
 	const numberTimeStart = Date.now();
 
 	if (debug) {
 		console.log(`from ${min} to ${max}`);
-	}
+  }
 
-	let run = true;
+  let run = true;
 	while (run) {
 		for (const _x of Array.range(min, max)) {
 			x = _x;
@@ -191,21 +193,22 @@ for (const number of findNumbers) {
 			run = false;
 			break;
 		} else {
-			tenDegree++;
+			if (direction === 0) {
+        min = 10 ** (tenDegree - 1);
+        max = 10 ** tenDegree;
+      } else {
+        tenDegree++;
 
-			if (10 ** tenDegree > Number.MAX_SAFE_INTEGER) {
-				max = BigInt(10 ** tenDegree);
-				min = BigInt(-max);
-			} else {
-				max = 10 ** tenDegree;
-				min = -max;
-			}
+        min = -(10 ** tenDegree);
+        max = min / 10;
+      }
 
 			if (debug) {
 				console.log(`from ${min} to ${max}`);
 			}
 
-			resCount = numberResults.length;
+      direction = (direction === 0) ? 1 : 0;
+      resCount = numberResults.length;
 		}
   }
 

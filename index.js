@@ -4,21 +4,6 @@
 
 const fs = require('fs');
 const _ = require('underscore');
-
-
-// http://xahlee.info/js/javascript_range_array.html
-const range = ((min, max, step = 1) => (Array(Math.floor((max - min)/step) + 1).fill(min).map(((x, i) => ( x + i * step )))));
-// display runtime
-const runtime = (prevTimestamp, human = true) => {
-  const seconds = ((Date.now() - prevTimestamp) / 1000);
-
-  if (human) {
-    return seconds.toFixed(4).toLocaleString() + ' s';
-  }
-
-  return seconds;
-};
-// script started at timestamp
 const timeStart = Date.now();
 
 
@@ -26,7 +11,7 @@ const findNumbers = [ 39 ]; // range(1,100);
 
 
 const hardNumbers = [ 30,33,39,42,51,52,74,75,84,87 ];
-const skipHardNumbers = false;
+const skipHardNumbers = true;
 
 
 // print info on the screen
@@ -41,6 +26,20 @@ const numberSecondsLimit = 0;
 const saveResults = true;
 
 
+// http://xahlee.info/js/javascript_range_array.html
+const range = ((min, max, step = 1) => (Array(Math.floor((max - min)/step) + 1).fill(min).map(((x, i) => ( x + i * step )))));
+// display runtime
+const runtime = (prevTimestamp, human = true) => {
+  const seconds = ((Date.now() - prevTimestamp) / 1000);
+
+  if (human) {
+    return seconds.toFixed(4).toLocaleString() + ' s';
+  }
+
+  return seconds;
+};
+
+
 // results folder
 const dataDir = __dirname + '/data';
 fs.access(dataDir, function(err) {
@@ -53,6 +52,14 @@ fs.access(dataDir, function(err) {
 let deepSearch = false;
 if (minResultsCount && minResultsCount > 1) {
 	deepSearch = true;
+}
+
+
+if (!Array.isArray(findNumbers)) {
+	if (debug) {
+		console.log('Error: findNumbers should be an Array!');
+	}
+	throw '';
 }
 
 

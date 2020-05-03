@@ -8,11 +8,21 @@ const _ = require('underscore');
 
 // http://xahlee.info/js/javascript_range_array.html
 const range = ((min, max, step = 1) => (Array(Math.floor((max - min)/step) + 1).fill(min).map(((x, i) => ( x + i * step )))));
+// display runtime
+const runtime = (prevTimestamp, human = true) => {
+  const seconds = ((Date.now() - prevTimestamp) / 1000);
+
+  if (human) {
+    return seconds.toFixed(4).toLocaleString() + ' s';
+  }
+
+  return seconds;
+};
 // script started at timestamp
 const timeStart = Date.now();
 
 
-const findNumbers = [ 51 ]; // range(1,100);
+const findNumbers = [ 39 ]; // range(1,100);
 
 
 const hardNumbers = [ 30,33,39,42,51,52,74,75,84,87 ];
@@ -89,6 +99,7 @@ for (const number of findNumbers) {
   }
 
   const numberTimeStart = Date.now();
+  let cycleTimeStart = 0;
 
 	let aborted = false;
 	let found = false;
@@ -97,7 +108,8 @@ for (const number of findNumbers) {
 	let tenDegree = 1;
 	let max = 10 ** tenDegree;
 	let min = -max;
-	let i = 0;
+  let i = 0;
+  let prevI = 0;
 
 	let x = 0;
 	let y = 0;
@@ -109,6 +121,9 @@ for (const number of findNumbers) {
 
 	let run = true;
 	while (run) {
+    prevI = i;
+    cycleTimeStart = Date.now();
+
 		for (const _x of range(min, max)) {
 			x = _x;
 			for (const _y of range(min, max)) {
@@ -161,7 +176,7 @@ for (const number of findNumbers) {
 					}
 
 					if (numberSecondsLimit > 0) {
-						const numberSecondsWasted = (Date.now() - numberTimeStart) / 1000;
+						const numberSecondsWasted = runtime(numberTimeStart, false);
 						if (numberSecondsWasted > numberSecondsLimit) {
 							aborted = true;
 						}
@@ -199,14 +214,14 @@ for (const number of findNumbers) {
       min = -max;
 
 			if (debug) {
-				console.log(`from ${min} to ${max}`);
+				console.log(`from ${min} to ${max} | (${(i - prevI).toLocaleString()}) // ${runtime(cycleTimeStart)}`);
 			}
 
 			resCount = numberResults.length;
 		}
   }
 
-  const numberRuntime = ((Date.now() - numberTimeStart) / 1000).toFixed(4).toLocaleString() + ' s';
+  const numberRuntime = runtime(numberTimeStart);
 
 	if (found) {
 		if (debug) {
@@ -251,5 +266,5 @@ for (const number of findNumbers) {
 
 if (debug) {
 	// runtime
-	console.log(((Date.now() - timeStart) / 1000).toFixed(4).toLocaleString() + ' s');
+	console.log(runtime(timeStart));
 }

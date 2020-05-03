@@ -1,0 +1,13 @@
+{
+    "number": 55,
+    "results": [
+        [
+            -9,
+            -6,
+            10
+        ]
+    ],
+    "range": "from -10 to 10",
+    "nonce": 546,
+    "runtime": "0.0150 s"
+}

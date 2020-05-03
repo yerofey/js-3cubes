@@ -10,7 +10,10 @@ const timeStart = Date.now();
 Array.range = (start, end) => Array.from({length: ((end + 1) - start)}, (v, k) => k + start);
 
 
-const numbers = [ 10 ]; //Array.range(32, 29); // [ 10 ]
+const findNumbers = [ 98,99,100 ]; // Array.range(30);
+
+
+const hardNumbers = [ 30,33,39,42,51,52,74,75,84,87 ];
 
 
 // print info on the screen
@@ -20,7 +23,7 @@ const minResultsCount = 1;
 // (x,y,z) should be not 4 or 5 modulo 9
 const optionMod9Enabled = true;
 // limit the calculation time for 1 number
-const numberSecondsLimit = 0;
+const numberSecondsLimit = 30;
 // save results into "./../data" folder
 const saveResults = true;
 
@@ -40,31 +43,37 @@ if (minResultsCount && minResultsCount > 1) {
 }
 
 
-if (numbers.length === 0) {
+if (findNumbers.length === 0) {
 	if (debug) {
-		console.log('Error: numbers is empty!');
+		console.log('Error: findNumbers is empty!');
 	}
 	throw '';
 }
 
 
-for (const number of numbers) {
+for (const number of findNumbers) {
   if (debug) {
     console.log(number);
+  }
+
+  if (hardNumbers.includes(number)) {
+    console.log('hard!');
+    console.log();
+    continue;
   }
 
 	if (optionMod9Enabled) {
 		const numberMod = number % 9;
 		if (numberMod == 4 || numberMod == 5) {
 			if (debug) {
-				console.log('skipped (mod)');
+				console.log('impossible (mod)');
 				console.log();
 			}
 
 			if (saveResults) {
 				const resultObject = {
 					number: number,
-					skipped: true
+					impossible: true
 				};
 
 				fs.writeFile(dataDir + '/' + number + '.json', JSON.stringify(resultObject, null, 4), (err) => {
@@ -192,19 +201,15 @@ for (const number of numbers) {
 				min = -max;
 			}
 
-			// if (max >=  || min <= Number.MIN_SAFE_INTEGER) {
-			// 	// console.log('limit reached');
-			// 	// run = false;
-			// 	// break;
-			// }
-
 			if (debug) {
 				console.log(`from ${min} to ${max}`);
 			}
 
 			resCount = numberResults.length;
 		}
-	}
+  }
+
+  const numberRuntime = ((Date.now() - timeStart) / 1000).toFixed(4).toLocaleString() + ' s';
 
 	if (found) {
 		if (debug) {
@@ -213,7 +218,7 @@ for (const number of numbers) {
 			} else {
 				console.log(`x=${x}, y=${y}, z=${z}`);
 			}
-		}
+    }
 
 		if (saveResults) {
 			let resultObject = {
@@ -227,12 +232,12 @@ for (const number of numbers) {
 				resultObject['finished'] = (!aborted);
 			}
 
-			resultObject['runtime'] = ((Date.now() - timeStart) / 1000).toFixed(4).toLocaleString() + ' s';
+			resultObject['runtime'] = numberRuntime;
 
 			fs.writeFile(dataDir + '/' + number + '.json', JSON.stringify(resultObject, null, 4), (err) => {
 				if (err) throw err;
 			});
-		}
+    }
 	}
 
 	if (debug) {
@@ -240,7 +245,8 @@ for (const number of numbers) {
 			console.log('!');
 		}
 
-		console.log(`nonce=${i}`);
+    console.log(`nonce=${i}`);
+    console.log('// ' + numberRuntime)
 		console.log();
 	}
 }

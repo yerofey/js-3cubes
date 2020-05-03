@@ -10,10 +10,11 @@ const timeStart = Date.now();
 Array.range = (start, end) => Array.from({length: ((end + 1) - start)}, (v, k) => k + start);
 
 
-const findNumbers = [ 98,99,100 ]; // Array.range(30);
+const findNumbers = [ 975 ]; // Array.range(1,100);
 
 
 const hardNumbers = [ 30,33,39,42,51,52,74,75,84,87 ];
+const skipHardNumbers = true;
 
 
 // print info on the screen
@@ -23,7 +24,7 @@ const minResultsCount = 1;
 // (x,y,z) should be not 4 or 5 modulo 9
 const optionMod9Enabled = true;
 // limit the calculation time for 1 number
-const numberSecondsLimit = 30;
+const numberSecondsLimit = 0;
 // save results into "./../data" folder
 const saveResults = true;
 
@@ -56,7 +57,7 @@ for (const number of findNumbers) {
     console.log(number);
   }
 
-  if (hardNumbers.includes(number)) {
+  if (skipHardNumbers && hardNumbers.includes(number)) {
     console.log('hard!');
     console.log();
     continue;
@@ -115,7 +116,6 @@ for (const number of findNumbers) {
 
           const calc = (x ** 3) + (y ** 3) + (z ** 3);
 
-					//console.log('// ' + calc + ` | x=${x}, y=${y}, z=${z}`);
 					++i;
 
 					if (calc === number) {

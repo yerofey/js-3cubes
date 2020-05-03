@@ -1,4 +1,9 @@
+# npm
 /node_modules
 yarn.lock
 
+# logs
 /output*.log
+
+# dev scripts
+/dev.js

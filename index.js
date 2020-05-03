@@ -6,15 +6,17 @@ const fs = require('fs');
 const _ = require('underscore');
 
 
+// http://xahlee.info/js/javascript_range_array.html
+const range = ((min, max, step = 1) => (Array(Math.floor((max - min)/step) + 1).fill(min).map(((x, i) => ( x + i * step )))));
+// script started at timestamp
 const timeStart = Date.now();
-Array.range = (start, end) => Array.from({length: ((end + 1) - start)}, (v, k) => k + start);
 
 
-const findNumbers = Array.range(1,100);
+const findNumbers = [ 51 ]; // range(1,100);
 
 
 const hardNumbers = [ 30,33,39,42,51,52,74,75,84,87 ];
-const skipHardNumbers = true;
+const skipHardNumbers = false;
 
 
 // print info on the screen
@@ -107,11 +109,11 @@ for (const number of findNumbers) {
 
 	let run = true;
 	while (run) {
-		for (const _x of Array.range(min, max)) {
+		for (const _x of range(min, max)) {
 			x = _x;
-			for (const _y of Array.range(min, max)) {
+			for (const _y of range(min, max)) {
 				y = _y;
-				for (const _z of Array.range(min, max)) {
+				for (const _z of range(min, max)) {
 					z = _z;
 
           const calc = (x ** 3) + (y ** 3) + (z ** 3);
@@ -193,13 +195,8 @@ for (const number of findNumbers) {
 		} else {
 			tenDegree++;
 
-			if (10 ** tenDegree > Number.MAX_SAFE_INTEGER) {
-				max = BigInt(10 ** tenDegree);
-				min = BigInt(-max);
-			} else {
-				max = 10 ** tenDegree;
-				min = -max;
-			}
+			max = 10 ** tenDegree;
+      min = -max;
 
 			if (debug) {
 				console.log(`from ${min} to ${max}`);

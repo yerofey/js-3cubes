@@ -9,6 +9,5 @@
     ],
     "range": "from -10 to 10",
     "nonce": 1676,
-    "finished": true,
-    "runtime": "10.0170 s"
+    "runtime": "0.0010 s"
 }

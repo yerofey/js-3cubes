@@ -84,7 +84,9 @@ for (const number of findNumbers) {
 
 			continue;
 		}
-	}
+  }
+
+  const numberTimeStart = Date.now();
 
 	let aborted = false;
 	let found = false;
@@ -98,8 +100,6 @@ for (const number of findNumbers) {
 	let x = 0;
 	let y = 0;
 	let z = 0;
-
-	const numberTimeStart = Date.now();
 
 	if (debug) {
 		console.log(`from ${min} to ${max}`);
@@ -209,7 +209,7 @@ for (const number of findNumbers) {
 		}
   }
 
-  const numberRuntime = ((Date.now() - timeStart) / 1000).toFixed(4).toLocaleString() + ' s';
+  const numberRuntime = ((Date.now() - numberTimeStart) / 1000).toFixed(4).toLocaleString() + ' s';
 
 	if (found) {
 		if (debug) {

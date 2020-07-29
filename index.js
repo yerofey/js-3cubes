@@ -2,6 +2,7 @@
  * Solving problem "Sums of three cubes"
  */
 
+// @ts-nocheck
 const fs = require('fs');
 const _ = require('underscore');
 const timeStart = Date.now();
@@ -39,21 +40,16 @@ const runtime = (prevTimestamp, human = true) => {
   return seconds;
 };
 
-
 // results folder
 const dataDir = __dirname + '/data';
-fs.access(dataDir, function(err) {
-	if (err && err.code === 'ENOENT') {
-		fs.mkdir(myDir);
-	}
-});
-
+if (!fs.existsSync(dataDir)){
+  fs.mkdirSync(dataDir);
+}
 
 let deepSearch = false;
 if (minResultsCount && minResultsCount > 1) {
 	deepSearch = true;
 }
-
 
 if (!Array.isArray(findNumbers)) {
 	if (debug) {
@@ -61,7 +57,6 @@ if (!Array.isArray(findNumbers)) {
 	}
 	throw '';
 }
-
 
 if (findNumbers.length === 0) {
 	if (debug) {
@@ -107,39 +102,39 @@ for (const number of findNumbers) {
 
   const numberTimeStart = Date.now();
   let cycleTimeStart = 0;
-
-	let aborted = false;
-	let found = false;
-	let numberResults = [];
-	let resCount = 0;
-	let tenDegree = 1;
-	let max = 10 ** tenDegree;
-	let min = -max;
-  let i = 0;
-  let prevI = 0;
-
-	let x = 0;
-	let y = 0;
-	let z = 0;
+  let aborted = false;
+  let found = false;
+  let run = true;
+  let numberResults = [];
+  let resCount = 0;
+  let tenDegree = 1;
+  let max = 10 ** tenDegree;
+  let min = -max;
+	let prevI = 0;
+	let i = 0;
+  let x = 0;
+  let y = 0;
+  let z = 0;
 
 	if (debug) {
 		console.log(`from ${min} to ${max}`);
 	}
 
-	let run = true;
 	while (run) {
     prevI = i;
     cycleTimeStart = Date.now();
 
+    loop1:
 		for (const _x of range(min, max)) {
-			x = _x;
+      x = _x;
+
 			for (const _y of range(min, max)) {
-				y = _y;
+        y = _y;
+
 				for (const _z of range(min, max)) {
 					z = _z;
 
-          const calc = (x ** 3) + (y ** 3) + (z ** 3);
-
+					const calc = (x ** 3) + (y ** 3) + (z ** 3);
 					++i;
 
 					if (calc === number) {
@@ -157,9 +152,9 @@ for (const number of findNumbers) {
                 return num * -1;
               }).reverse();
               const tempNumbersInLine = tempSorted.join('_');
-							let tempIsUnique = true;
+              let tempIsUnique = true;
 
-							for (const res of numberResults) {
+              for (const res of numberResults) {
                 if (!Array.isArray(res)) {
                   continue;
                 }
@@ -191,19 +186,9 @@ for (const number of findNumbers) {
 
 					if (found && minResultsCount == numberResults.length || aborted) {
 						run = false;
-						break;
+						break loop1;
 					}
 				}
-
-				if (found && minResultsCount == numberResults.length || aborted) {
-					run = false;
-					break;
-				}
-			}
-
-			if (found && minResultsCount == numberResults.length || aborted) {
-				run = false;
-				break;
 			}
 		}
 
@@ -239,23 +224,23 @@ for (const number of findNumbers) {
 			}
     }
 
-		if (saveResults) {
-			let resultObject = {
-				number: number,
-				results: numberResults,
-				range: `from ${min} to ${max}`,
-				nonce: i,
-			};
+    if (saveResults) {
+      let resultObject = {
+        number: number,
+        results: numberResults,
+        range: `from ${min} to ${max}`,
+        nonce: i,
+      };
 
-			if (numberSecondsLimit > 0) {
-				resultObject['finished'] = (!aborted);
-			}
+      if (numberSecondsLimit > 0) {
+        resultObject['finished'] = (!aborted);
+      }
 
-			resultObject['runtime'] = numberRuntime;
+      resultObject['runtime'] = numberRuntime;
 
-			fs.writeFile(dataDir + '/' + number + '.json', JSON.stringify(resultObject, null, 4), (err) => {
-				if (err) throw err;
-			});
+      fs.writeFile(dataDir + '/' + number + '.json', JSON.stringify(resultObject, null, 4), (err) => {
+        if (err) throw err;
+      });
     }
 	}
 
@@ -265,7 +250,7 @@ for (const number of findNumbers) {
 		}
 
     console.log(`nonce=${i}`);
-    console.log('// ' + numberRuntime)
+    console.log('// ' + numberRuntime);
 		console.log();
 	}
 }
